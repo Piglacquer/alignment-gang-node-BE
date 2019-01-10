@@ -6,5 +6,8 @@ module.exports = {
   },
   readMarkersByCityId (id) {
     return db('markers').where('city_id', id)
+  },
+  createMarker (marker) {
+    return db('markers').insert(marker).returning('*')
   }
 }

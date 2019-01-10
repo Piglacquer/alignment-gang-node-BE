@@ -1,4 +1,3 @@
-
 exports.up = (knex, Promise) => {
   return knex.schema.createTable('markers', (marker) => {
     marker.increments('id')
