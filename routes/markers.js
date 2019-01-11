@@ -9,17 +9,14 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/:id', (req, res, next) => {
-  let markers = null
-  let city = null
-  return markerQueries.readMarkersByCityId(req.params.id)
+  return Promise.all([
+    markerQueries.readMarkersByCityId(req.params.id),
+    locationQueries.readCityById(req.params.id)
+  ])
     .then(data => {
-      markers = data
+      return { markers: data[0], city: data[1] }
     })
-    .then(() => locationQueries.readCityById(req.params.id))
-    .then(data => {
-      city = data
-    })
-    .then(() => res.status(200).send({ city: city, markers: markers }))
+    .then(data => res.status(200).send(data))
 })
 
 router.post('/', (req, res, next) => {
